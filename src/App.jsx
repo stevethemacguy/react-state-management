@@ -17,6 +17,19 @@ export default function App() {
       .then((response) => setProducts(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
+
+    // Async Await version that does the exact same thing
+    // async function startUp() {
+    //   try {
+    //     const response = await getProducts('shoes')
+    //     setProducts(response);
+    //   } catch (error) {
+    //     setError(error)
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // }
+    // startUp();
   }, [])
 
   // FilteredProducts is an array containing only products whose size matches the selected value. The ternary operator is used because the shoeSize
