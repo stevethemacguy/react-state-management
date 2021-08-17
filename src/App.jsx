@@ -80,6 +80,9 @@ export default function App() {
               <option value="9">9</option>
             </select>
           </section>
+          {
+            shoeSize && <h2>Found {filteredProducts.length} items.</h2>
+          }
           <section id="products">
             {
               // Equivalent to filteredProducts.map(product => renderProduct(product)). This is an example of 'point free' syntax
