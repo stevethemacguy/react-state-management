@@ -1,36 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Footer from './Footer';
 import Header from './Header';
-import {getProducts} from './services/productService';
 import Spinner from './Spinner';
+import useFetch from './services/useFetch';
 
 export default function App() {
   const [shoeSize, setShoeSize] = useState('');
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  // On page load, get the list of products from the API
-  useEffect(() => {
-    getProducts('shoes')
-      .then((response) => setProducts(response))
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-
-    // Async Await version that does the exact same thing
-    // async function startUp() {
-    //   try {
-    //     const response = await getProducts('shoes')
-    //     setProducts(response);
-    //   } catch (error) {
-    //     setError(error)
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // }
-    // startUp();
-  }, [])
+  // Destructure the object returned by useFetch, which includes the data, a T/F loading value, and (possibly) an error
+  // The 'data: products' syntax renames data to products. It removes the need for an extra variable (i.e. const products = data).
+  const {data: products, loading, error} = useFetch('products?category=shoes');
 
   // FilteredProducts is an array containing only products whose size matches the selected value. The ternary operator is used because the shoeSize
   // will be an empty string when the app first starts. In this case, the user hasn't selected to filter anything yet, so we just return all of the products.
