@@ -1,19 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import "./App.css";
-import Footer from "./Footer";
-import Header from "./Header";
+import './App.css';
+import Footer from './Footer';
+import Header from './Header';
 import {getProducts} from './services/productService';
+import Spinner from './Spinner';
 
 export default function App() {
   const [shoeSize, setShoeSize] = useState('');
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // On page load, get the list of products from the API
   useEffect(() => {
     getProducts('shoes')
-      .then((response) => { setProducts(response);})
-      .catch((error) => setError(error));
+      .then((response) => setProducts(response))
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }, [])
 
   // FilteredProducts is an array containing only products whose size matches the selected value. The ternary operator is used because the shoeSize
@@ -37,6 +40,7 @@ export default function App() {
   }
 
   if (error) throw error;
+  if (loading) return <Spinner />;
 
   return (
     <>
