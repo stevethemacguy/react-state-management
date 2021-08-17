@@ -1,50 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
-
-const products = [
-  {
-    "id": 1,
-    "category": "shoes",
-    "image": "shoe1.jpg",
-    "name": "Hiker",
-    "price": 94.95,
-    "skus": [
-      { "sku": "17", "size": 7 },
-      { "sku": "18", "size": 8 }
-    ],
-    "description": "This rugged boot will get you up the mountain safely."
-  },
-  {
-    "id": 2,
-    "category": "shoes",
-    "image": "shoe2.jpg",
-    "name": "Climber",
-    "price": 78.99,
-    "skus": [
-      { "sku": "28", "size": 8 },
-      { "sku": "29", "size": 9 }
-    ],
-    "description": "Sure-footed traction in slippery conditions."
-  },
-  {
-    "id": 3,
-    "category": "shoes",
-    "image": "shoe3.jpg",
-    "name": "Explorer",
-    "price": 145.95,
-    "skus": [
-      { "sku": "37", "size": 7 },
-      { "sku": "38", "size": 8 },
-      { "sku": "39", "size": 9 }
-    ],
-    "description": "Look stylish while stomping in the mud."
-  }
-];
+import {getProducts} from './services/productService';
 
 export default function App() {
   const [shoeSize, setShoeSize] = useState('');
+  const [products, setProducts] = useState([]);
+
+  // On page load, get the list of products from the API
+  useEffect(() => {
+    getProducts('shoes')
+      .then((data) => {
+        setProducts(data);
+      });
+  },[])
 
   // FilteredProducts is an array containing only products whose size matches the selected value. The ternary operator is used because the shoeSize
   // will be an empty string when the app first starts. In this case, the user hasn't selected to filter anything yet, so we just return all of the products.
