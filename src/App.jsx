@@ -7,14 +7,14 @@ import {getProducts} from './services/productService';
 export default function App() {
   const [shoeSize, setShoeSize] = useState('');
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
 
   // On page load, get the list of products from the API
   useEffect(() => {
     getProducts('shoes')
-      .then((data) => {
-        setProducts(data);
-      });
-  },[])
+      .then((response) => { setProducts(response);})
+      .catch((error) => setError(error));
+  }, [])
 
   // FilteredProducts is an array containing only products whose size matches the selected value. The ternary operator is used because the shoeSize
   // will be an empty string when the app first starts. In this case, the user hasn't selected to filter anything yet, so we just return all of the products.
@@ -35,6 +35,8 @@ export default function App() {
       </div>
     );
   }
+
+  if (error) throw error;
 
   return (
     <>
