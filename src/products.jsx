@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import Spinner from './Spinner';
 import useFetch from './services/useFetch';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import PageNotFound from './PageNotFound';
 
 export default function Products() {
   const [shoeSize, setShoeSize] = useState('');
-  // Get the category param from the URL. UseParams() returns an object a property for each param, so we destructure the object, keeping only the category param.
+  // Get the category param from the URL. UseParams() returns an object with a property for each param, so we destructure the object, keeping only the category param.
   const {category} = useParams();
   // Destructure the object returned by useFetch, which includes the data, a T/F loading value, and (possibly) an error
   // The 'data: products' syntax renames data to products. It removes the need for an extra variable (i.e. const products = data).
@@ -23,11 +23,11 @@ export default function Products() {
   function renderProduct(product) {
     return (
       <div key={product.id} className="product">
-        <a href="/">
+        <Link to={`/${category}/${product.id}`}>
           <img src={`/images/${product.image}`} alt={product.name} />
           <h3>{product.name}</h3>
           <p>${product.price}</p>
-        </a>
+        </Link>
       </div>
     );
   }
