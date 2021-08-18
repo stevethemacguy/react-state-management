@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
 import Spinner from './Spinner';
 import useFetch from './services/useFetch';
+import {useParams} from 'react-router-dom';
+import PageNotFound from './PageNotFound';
 
 export default function Products() {
   const [shoeSize, setShoeSize] = useState('');
-
+  // Get the category param from the URL. UseParams() returns an object a property for each param, so we destructure the object, keeping only the category param.
+  const {category} = useParams();
   // Destructure the object returned by useFetch, which includes the data, a T/F loading value, and (possibly) an error
   // The 'data: products' syntax renames data to products. It removes the need for an extra variable (i.e. const products = data).
-  const {data: products, loading, error} = useFetch('products?category=shoes');
+  const {data: products, loading, error} = useFetch(`products?category=${category}`);
 
   // FilteredProducts is an array containing only products whose size matches the selected value. The ternary operator is used because the shoeSize
   // will be an empty string when the app first starts. In this case, the user hasn't selected to filter anything yet, so we just return all of the products.
@@ -31,6 +34,10 @@ export default function Products() {
 
   if (error) throw error;
   if (loading) return <Spinner />;
+
+  if (!products || products.length === 0) {
+    return <PageNotFound />
+  }
 
   return (
     <>
