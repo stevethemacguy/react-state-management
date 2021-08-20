@@ -4,7 +4,7 @@ import useFetch from './services/useFetch';
 import Spinner from './Spinner';
 import PageNotFound from './PageNotFound';
 
-export default function Detail() {
+export default function Detail(props) {
   const {id} = useParams(); // Note: 'id' is the name we used when setting up the route param (e.g. shoes/id)
   const navigate = useNavigate(); // Used to tell the router to navigate to a different route.
 
@@ -19,6 +19,12 @@ export default function Detail() {
   if (!product) return <PageNotFound/>;
   if (error) throw error;
 
+  const addItemToCart = (product) => {
+    // We only add partial object since the cart doesn't need the whole thing
+    props.addToCart(product.id, product.sku);
+    navigate('/cart');
+  };
+
   return (
     <div id="detail">
       <h1>{product.name}</h1>
@@ -31,7 +37,7 @@ export default function Detail() {
         }
       </select>
       <div>
-        <button className="btn btn-primary" disabled={!sku} onClick={() => {navigate('/cart')}}>Add to Cart</button>
+        <button className="btn btn-primary" disabled={!sku} onClick={() => {addItemToCart(product)}}>Add to Cart</button>
       </div>
       <img src={`/images/${product.image}`} alt={product.category} />
     </div>
