@@ -3,10 +3,10 @@ import {PageNotFound} from './PageNotFound';
 import './App.css';
 import Footer from './Footer';
 import Header from './Header';
-import Products from './products';
 import {Route, Routes} from 'react-router-dom';
 import Cart from './Cart';
 import Detail from './Detail';
+import Products from './Products';
 
 export default function App() {
   return (

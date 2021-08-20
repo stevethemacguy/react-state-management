@@ -13,7 +13,7 @@ export default function useFetch(url) {
   // On page load, get the list of products from the API
   useEffect(() => {
     // Async Await version that does the exact same thing
-    async function startUp() {
+    async function fetchData() {
       try {
         const response = await fetch(baseUrl + url);
         if (response.ok) {
@@ -28,7 +28,7 @@ export default function useFetch(url) {
         setLoading(false);
       }
     }
-    startUp();
+    fetchData();
   }, [url]) // Any time a different URL is passed to this hook, fetch data with the new URL
 
   return { data, error, loading};
