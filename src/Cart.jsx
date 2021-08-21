@@ -2,7 +2,7 @@ import React from "react";
 import Spinner from "./Spinner";
 import useFetchAll from './services/useFetchAll';
 
-// Cart receives an object that has the cart and an updateQuantity method
+// The props object sent to the Cart has the cart and an updateQuantity method
 export default function Cart(props) {
   const { cart, updateQuantity } = props;
   // Build a URL for each product in the cart. In the real world, the API would just have getCart() to return all the products,
@@ -18,8 +18,8 @@ export default function Cart(props) {
       (p) => p.id === parseInt(id)
     );
 
-    // Get the size of this item (which we know is a show)
-    const { size } = skus.find((s) => s.sku === sku);
+    // Get the size of this item (which we know is a shoe)
+    const size = skus.find((s) => s.sku === sku);
 
     return (
       <li key={sku} className="cart-item">

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {PageNotFound} from './PageNotFound';
 import './App.css';
 import Footer from './Footer';
 import Header from './Header';
@@ -9,7 +8,6 @@ import Detail from './Detail';
 import Products from './Products';
 
 export default function App() {
-
   const [cart, setCart] = useState([]);
 
   // Adds an item to the cart. If the item was already in the cart (i.e. the SKU matches), then we update the item's quantity instead of 'adding it.'
@@ -68,7 +66,7 @@ export default function App() {
             <Route path="/" element={<h1>Welcome to Carved Rock Fitness</h1>}/>
             <Route path="/:category" element={<Products />}/>
             <Route path="/:category/:id" element={<Detail addToCart={addToCart}/>}/>
-            <Route path="/cart" element={<Cart/>}/>
+            <Route path="/cart" element={<Cart cart={cart}/>}/>
           </Routes>
         </main>
       </div>
