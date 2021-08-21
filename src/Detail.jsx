@@ -19,9 +19,12 @@ export default function Detail(props) {
   if (!product) return <PageNotFound/>;
   if (error) throw error;
 
-  const addItemToCart = (product) => {
-    // We only add partial object since the cart doesn't need the whole thing
-    props.addToCart(product.id, product.sku);
+  // This function doesn't need any arguments because...
+  // 1. We already retrieved the product's id from the URL
+  // 2. The sku of the selected product is set using setSku (i.e. it's the state variable)
+  const addItemToCart = () => {
+    // We only add the id and sku of the product object since the cart doesn't need the whole product
+    props.addToCart(id, sku);
     navigate('/cart');
   };
 
@@ -33,11 +36,12 @@ export default function Detail(props) {
       <select id="size" value={sku} onChange={(event) => setSku(event.target.value)}>
         <option value="">What Size?</option>
         {
+          // Each product has an array of skus, so we show them all. When an option is selected, sku state var is set to that single selected sku
           product.skus.map(s => <option key={s.sku} value={s.sku}>{s.size}</option>)
         }
       </select>
       <div>
-        <button className="btn btn-primary" disabled={!sku} onClick={() => {addItemToCart(product)}}>Add to Cart</button>
+        <button className="btn btn-primary" disabled={!sku} onClick={() => {addItemToCart()}}>Add to Cart</button>
       </div>
       <img src={`/images/${product.image}`} alt={product.category} />
     </div>

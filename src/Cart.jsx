@@ -13,13 +13,14 @@ export default function Cart(props) {
 
   function renderItem(itemInCart) {
     const { id, sku, quantity } = itemInCart;
+
     // Use the ID of the item in the cart to find that item in products array (which was returned by useFetchAll)
     const { price, name, image, skus } = products.find(
       (p) => p.id === parseInt(id)
     );
 
-    // Get the size of this item (which we know is a shoe)
-    const size = skus.find((s) => s.sku === sku);
+    // Get the size of this item (which we know is a shoe object)
+    const {size} = skus.find((s) => s.sku === sku);
 
     return (
       <li key={sku} className="cart-item">
