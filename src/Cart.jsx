@@ -11,16 +11,27 @@ export default function Cart(props) {
   // Gets ALL products in the cart by making multiple HTTP requests (once for each product URL) all at once.
   const { data: products, loading, error } = useFetchAll(urls);
 
-  const totalQuantity = () => {
-    let sum = 0;
-    cart.forEach((item) => {
-      sum += item.quantity;
-    })
-    return sum;
-  };
+  // A reducer function takes two arguments and returns an aggregated/combined version of those two things.
+  // 1. The 1st argument is an accumulator variable that is used to keep a running total. It's also called the 'previous' value because it is passed along by .reduce() to the next reducer function call.
+  // 2. The 2nd argument is a variable that represents a single item in the array that's being reduced (e.g. the cart array).
+  // ReducerFunction() will be called for each item in the array, so we can find the total number of items in the cart by simply adding the quantity of each item to the 'total' accumulator.
+  const reducerFunction = (total, item) => total + item.quantity;
 
-  //const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  // The first argument to .reduce() is a reducer function, and the second arg is the starting value of the accumulator (i.e. a variable that keeps a running total).
+  // The .reduce() function calls the reducerFunction above on each item in the cart array. On each iteration, the result of the reducer function (i.e. the returned value) is
+  // passed along to the next reducerFunction call (via the accumulator variable, which keeps a running total). Once all items are processed, cart.reduce returns the final aggregated total
+  const totalCartItems = cart.reduce(reducerFunction, 0);
 
+  // Note. The reduce function above does the same thing as this basic for loop:
+  // const totalCartItems = () => {
+  //   let sum = 0;
+  //   cart.forEach((item) => {
+  //     sum += item.quantity;
+  //   })
+  //   return sum;
+  // };
+  // But once you're comfortable with Array.reduce(), you can do this with a single line of code by writing the reducer function inline:
+  // const totalCartItems = cart.reduce((total, item) => total + item.quantity));
 
   function renderItem(itemInCart) {
     const { id, sku, quantity } = itemInCart;
@@ -66,7 +77,7 @@ export default function Cart(props) {
   return (
     <section id="cart">
       {
-        cart.length > 0 ? <h1>Cart ({totalQuantity()} items)</h1> : <h1>Your Cart is empty</h1>
+        totalCartItems > 0 ? <h1>Cart ({totalCartItems} items)</h1> : <h1>Your Cart is empty</h1>
       }
 
       <ul>{cart.map(renderItem)}</ul>
