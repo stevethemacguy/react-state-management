@@ -60,9 +60,23 @@ export default function App() {
   // NOTE: The 'items' argument is the current cart STATE, which is an array of (partial) product objects. This is is provided by React.
   // Unlike addToCart(), we don't need to use .find() to see if the item is already in the cart; we already know that it is. We just need to update that item.
   function updateQuantity(sku, quantity) {
+    if (quantity === 0) {
+      removeItemFromCart(sku);
+    }
+    else {
+      setCart((items) => {
+        // See AddToCart documentation. The is identical except that we use the specified quantity instead of just incrementing quantity +1.
+        // Note: You can't use updateQuantity() from addToCart's else statement above because the map below won't add a new item, it just updates an item if it's already in the cart.
+        return items.map((item) => item.sku === sku ? {...item, quantity} : item);
+      });
+    }
+  }
+
+  // Removes the item from the cart. Note: If you need to lower the QTY, use updateQuantity() instead. RemoveItemFromCart() removes the product completely.
+  function removeItemFromCart(sku) {
     setCart((items) => {
-      // See AddToCart documentation. The is identical except that we use the specified quantity instead of just incrementing quantity +1.
-      return items.map((item) => item.sku === sku ? {...item, quantity} : item);
+      // Keep all items in the cart *except* the item that matches the sku passed.
+      return items.filter((item) => item.sku !== sku);
     });
   }
 
