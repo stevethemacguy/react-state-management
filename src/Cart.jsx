@@ -11,6 +11,17 @@ export default function Cart(props) {
   // Gets ALL products in the cart by making multiple HTTP requests (once for each product URL) all at once.
   const { data: products, loading, error } = useFetchAll(urls);
 
+  const totalQuantity = () => {
+    let sum = 0;
+    cart.forEach((item) => {
+      sum += item.quantity;
+    })
+    return sum;
+  };
+
+  //const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+
   function renderItem(itemInCart) {
     const { id, sku, quantity } = itemInCart;
 
@@ -54,7 +65,10 @@ export default function Cart(props) {
 
   return (
     <section id="cart">
-      <h1>Cart</h1>
+      {
+        cart.length > 0 ? <h1>Cart ({totalQuantity()} items)</h1> : <h1>Your Cart is empty</h1>
+      }
+
       <ul>{cart.map(renderItem)}</ul>
     </section>
   );
