@@ -30,6 +30,7 @@ export default function Cart(props) {
           <p>${price}</p>
           <p>Size: {size}</p>
           <div>
+            <span>Quantity: </span>
             <select
               aria-label={`Select quantity for ${name} size ${size}`}
               onChange={(e) => updateQuantity(sku, parseInt(e.target.value))}

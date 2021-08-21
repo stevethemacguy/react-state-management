@@ -220,3 +220,7 @@ form > div {
     transform: rotate(360deg);
   }
 }
+
+.shoe-size {
+  margin-bottom: 20px;
+}

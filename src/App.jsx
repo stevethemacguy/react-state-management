@@ -36,7 +36,6 @@ export default function App() {
     	  // Return a new (cloned) array of items, but use map to find the matching item and update it's quantity before returning the array
         // Note: This ternary line is equivalent to the code below. The ternary just gets rid of the inner return statements.
         return items.map((item) => item.sku === sku ? { ...item, quantity: item.quantity + 1} : item);
-
         // This code is equivalent to the ternary above, but more verbose to explain what's happening.
         // Map returns a new array of items after we make our change (i.e. it clones the items but makes our change).
         // The inner return statements say to continue mapping through each item, but once that's done, the final array created by .map
@@ -57,6 +56,16 @@ export default function App() {
     })
   }
 
+  // Update the quantity of an item already in the cart. AddToCart just increments the quantity by 1, but this function increments it by any number
+  // NOTE: The 'items' argument is the current cart STATE, which is an array of (partial) product objects. This is is provided by React.
+  // Unlike addToCart(), we don't need to use .find() to see if the item is already in the cart; we already know that it is. We just need to update that item.
+  function updateQuantity(sku, quantity) {
+    setCart((items) => {
+      // See AddToCart documentation. The is identical except that we use the specified quantity instead of just incrementing quantity +1.
+      return items.map((item) => item.sku === sku ? {...item, quantity} : item);
+    });
+  }
+
   return (
     <>
       <div className="content">
@@ -66,7 +75,7 @@ export default function App() {
             <Route path="/" element={<h1>Welcome to Carved Rock Fitness</h1>}/>
             <Route path="/:category" element={<Products />}/>
             <Route path="/:category/:id" element={<Detail addToCart={addToCart}/>}/>
-            <Route path="/cart" element={<Cart cart={cart}/>}/>
+            <Route path="/cart" element={<Cart cart={cart} updateQuantity={updateQuantity}/>}/>
           </Routes>
         </main>
       </div>

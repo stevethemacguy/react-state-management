@@ -33,7 +33,7 @@ export default function Detail(props) {
       <h1>{product.name}</h1>
       <p>{product.description}</p>
       <p id="price">${product.price}</p>
-      <select id="size" value={sku} onChange={(event) => setSku(event.target.value)}>
+      <select className="shoe-size" value={sku} onChange={(event) => setSku(event.target.value)}>
         <option value="">What Size?</option>
         {
           // Each product has an array of skus, so we show them all. When an option is selected, sku state var is set to that single selected sku
