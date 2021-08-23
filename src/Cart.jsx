@@ -1,10 +1,13 @@
 import React from "react";
 import Spinner from "./Spinner";
 import useFetchAll from './services/useFetchAll';
+import {useNavigate} from 'react-router-dom';
 
 // The props object sent to the Cart has the cart and an updateQuantity method
 export default function Cart(props) {
   const { cart, updateQuantity } = props;
+  const navigate = useNavigate(); // Used to tell the router to navigate to a different route.
+
   // Build a URL for each product in the cart. In the real world, the API would just have getCart() to return all the products,
   // but our DB requires a URL for each product, so we build those here.
   const urls = cart.map((i) => `products/${i.id}`);
@@ -79,8 +82,10 @@ export default function Cart(props) {
       {
         totalCartItems > 0 ? <h1>Cart ({totalCartItems} items)</h1> : <h1>Your Cart is empty</h1>
       }
-
       <ul>{cart.map(renderItem)}</ul>
+      {
+        totalCartItems > 0 && <button className="btn btn-primary" onClick={() => navigate('/checkout')}>Checkout</button>
+      }
     </section>
   );
 }

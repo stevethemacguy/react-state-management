@@ -6,6 +6,7 @@ import {Route, Routes} from 'react-router-dom';
 import Cart from './Cart';
 import Detail from './Detail';
 import Products from './Products';
+import Checkout from './Checkout';
 
 export default function App() {
   // The default value you pass to useState is only applied on the first render, BUT it is evaluated on EVERY render
@@ -107,6 +108,7 @@ export default function App() {
             <Route path="/:category" element={<Products />}/>
             <Route path="/:category/:id" element={<Detail addToCart={addToCart}/>}/>
             <Route path="/cart" element={<Cart cart={cart} updateQuantity={updateQuantity}/>}/>
+            <Route path="/checkout" element={<Checkout cart={cart}/>}/>
           </Routes>
         </main>
       </div>
