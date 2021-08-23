@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 
 // Declaring outside component to avoid recreation on each render
 const emptyAddress = {
-  city: "",
-  country: "",
+  city: '',
+  country: '',
 };
 
-export default function Checkout({ cart }) {
+export default function Checkout({cart}) {
   const [address, setAddress] = useState(emptyAddress);
 
   function handleChange(e) {
-    // TODO
+    e.persist(); // Note: No longer required as of React 17
+    setAddress((curAddress) => {
+      return {
+        ...curAddress, // Copy the current object, but also update whatever was changed (see below)
+        // Change the specified property. The input's ID is used to (dynamically) determine which object property to set.
+        [e.target.id]: e.target.value // Ex. [city]: 'Irvine' => address.city: 'Irvine'
+      };
+    })
   }
 
   function handleBlur(event) {
@@ -27,13 +34,14 @@ export default function Checkout({ cart }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="city">City</label>
-          <br />
+          <br/>
           <input id="city" type="text" value={address.city} onBlur={handleBlur} onChange={handleChange}/>
         </div>
 
         <div>
           <label htmlFor="country">Country</label>
-          <br />
+          <br/>
+          {/*Note: The ID is used to update the value on change (i.e. it identifies which object property to change)*/}
           <select id="country" value={address.country} onBlur={handleBlur} onChange={handleChange}>
             <option value="">Select Country</option>
             <option value="China">China</option>

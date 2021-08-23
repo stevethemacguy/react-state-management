@@ -23,7 +23,7 @@ export default class ErrorBoundary extends React.Component {
   render() {
     // If there's an error, render some custom UI
     if (this.state.hasError) {
-      return `<h1>Something went wrong.</h1>`;
+      return <h1>Something went wrong.</h1>;
     }
 
     // Assuming there' no error, render all child components of the ErrorBoundary (i.e. render normally)
