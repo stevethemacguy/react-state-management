@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Footer from './Footer';
 import Header from './Header';
@@ -8,7 +8,24 @@ import Detail from './Detail';
 import Products from './Products';
 
 export default function App() {
-  const [cart, setCart] = useState([]);
+  // The default value you pass to useState is only applied on the first render, BUT it is evaluated on EVERY render
+  // Passing a function to useState ensures that the function is only run the first time the component renders.
+  // For complicated use cases, you can also look into https://github.com/rehooks/local-storage
+  const [cart, setCart] = useState(() => {
+    try {
+      // If the cart is available in localStorage, use it. NOTE: You could also use ?? to only return an empty array if the left side is null or undefined.
+      return JSON.parse(localStorage.getItem('cart')) || [];
+    }
+    catch {
+      console.error('The cart could not be parsed into JSON');
+      return [];
+    }
+  });
+
+  // Any time the cart changes, store it in localStorage.
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart))
+  }, [cart]);
 
   // Adds an item to the cart. If the item was already in the cart (i.e. the SKU matches), then we update the item's quantity instead of 'adding it.'
   // This scenario is complicated because in order to preserve immutability, we must clone the cart's existing items array while also adjusting the matching item's quantity.
