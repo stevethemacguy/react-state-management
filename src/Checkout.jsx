@@ -15,10 +15,13 @@ const emptyAddress = {
   country: '',
 };
 
-export default function Checkout({cart, emptyCart}) {
+export default function Checkout({emptyCart}) {
   const [address, setAddress] = useState(emptyAddress);
-  const [status, setStatus] = useState(STATUS.IDLE);
-  const [saveError, setSaveError] = useState(null);
+  const [status, setStatus] = useState(STATUS.IDLE); // Form submission status. We check for errors before submitting the form
+  const [saveError, setSaveError] = useState(null); // AJAX error
+
+  // Tracks form inputs that have been touched. Each property in the object will be an ID of an input that's been touched.
+  const [touched, setTouched] = useState({});
 
   // FormErrors is an object that holds all the address errors in the form. The object uses the <input> IDs as keys (i.e. property names)
   // and the error messages as values. For example, if the 'city' input has an error, then formErrors['city'] will return 'City is required'.
@@ -39,7 +42,14 @@ export default function Checkout({cart, emptyCart}) {
   }
 
   function handleBlur(event) {
-    // TODO
+    event.persist(); // Note: No longer required as of React 17
+    setTouched((curTouched) => {
+    	return {
+    	  ...curTouched,  // Copy the current object.
+        // Mark the specified input as touched. The input's ID is used to (dynamically) determine which object property to set.
+        [event.target.id]: true // Ex. [city]: true => address.city: true
+      }
+    })
   }
 
   // Returns an empty object if there are no errors. Otherwise, returns an object containing all the errors
@@ -106,6 +116,9 @@ export default function Checkout({cart, emptyCart}) {
           <label htmlFor="city">City</label>
           <br/>
           <input id="city" type="text" value={address.city} onBlur={handleBlur} onChange={handleChange}/>
+          <p className="alert">
+            {(touched.city || status === STATUS.INVALID) && formErrors.city}
+          </p>
         </div>
         <div>
           <label htmlFor="country">Country</label>
@@ -116,6 +129,9 @@ export default function Checkout({cart, emptyCart}) {
             <option value="China">China</option>
             <option value="USA">USA</option>
           </select>
+          <p className="alert">
+            {(touched.country || status === STATUS.INVALID) && formErrors.country}
+          </p>
         </div>
         <div>
           <input disabled={status === STATUS.SUBMITTING} type="submit" className="btn btn-primary" value="Save Shipping Info"/>
