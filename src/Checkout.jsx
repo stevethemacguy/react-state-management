@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {saveShippingAddress} from './services/shippingService';
+import Spinner from './Spinner';
 
 const STATUS = {
   IDLE: 'IDLE',
@@ -13,9 +15,10 @@ const emptyAddress = {
   country: '',
 };
 
-export default function Checkout({cart}) {
+export default function Checkout({cart, emptyCart}) {
   const [address, setAddress] = useState(emptyAddress);
   const [status, setStatus] = useState(STATUS.IDLE);
+  const [saveError, setSaveError] = useState(null);
 
   function handleChange(e) {
     e.persist(); // Note: No longer required as of React 17
@@ -35,6 +38,23 @@ export default function Checkout({cart}) {
   async function handleSubmit(event) {
     event.preventDefault(); // Perform our own validation instead of submitting.
     setStatus(STATUS.SUBMITTING);
+    try {
+      await saveShippingAddress(address);
+      emptyCart();
+      setStatus(STATUS.COMPLETED);
+    } catch (e) {
+      setSaveError(e);
+    }
+    // finally
+    // {
+    //   setStatus(STATUS.SUBMITTED);
+    // }
+  }
+
+  if (saveError) throw saveError;
+  if (status === STATUS.SUBMITTING) return <Spinner />;
+  if (status === STATUS.COMPLETED) {
+    return <h1>Checkout Complete!</h1>
   }
 
   return (

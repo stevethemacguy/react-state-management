@@ -98,6 +98,12 @@ export default function App() {
     });
   }
 
+  // Removes the item from the cart. Note: If you need to lower the QTY, use updateQuantity() instead. RemoveItemFromCart() removes the product completely.
+  function emptyCart() {
+    // Note: Any time the cart changes, it is updated in localStorage (see useEffect above), so we don't have to do anything special with it.
+    setCart([]);
+  }
+
   return (
     <>
       <div className="content">
@@ -108,7 +114,7 @@ export default function App() {
             <Route path="/:category" element={<Products />}/>
             <Route path="/:category/:id" element={<Detail addToCart={addToCart}/>}/>
             <Route path="/cart" element={<Cart cart={cart} updateQuantity={updateQuantity}/>}/>
-            <Route path="/checkout" element={<Checkout cart={cart}/>}/>
+            <Route path="/checkout" element={<Checkout cart={cart} emptyCart={emptyCart}/>}/>
           </Routes>
         </main>
       </div>
