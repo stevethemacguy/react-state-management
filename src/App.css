@@ -170,13 +170,13 @@ fieldset[disabled] .btn {
   box-shadow: none;
 }
 
-p[role="alert"] {
+p.alert {
   display: inline;
   margin-left: 10px;
   color: red;
 }
 
-div[role="alert"] {
+div.alert {
   color: red;
 }
 
